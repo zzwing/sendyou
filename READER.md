@@ -25,6 +25,15 @@
         > git checkout index.js    将暂存区的代码覆盖掉工作区 此时工作区代码与暂存区一致 文件是绿色的
         > git reset --hard 版本号  将工作区、暂存区、历史区代码统一到文件的提交版本号 此操作容易把其他文件也改变掉 慎用
 
+## 分支管理
+    - 查看分支
+        > git branch
+    - 创建分支
+        > git branch dev(分支名)
+    - 切换分支
+        > git checkout dev
+    - 创建并切换分支
+        > git checkout -b dev
 
 
     -- hhh
