@@ -37,4 +37,13 @@
 
     - 合并分支
         > git merge dev (必须在master主干上去合并，此时如果有冲突需要手动修改冲突再次提交)
+## 提交到github上
+    - 在github上新建一个项目
+    - 获取到链接地址
+    > git remote add origin(链接名称) 获取到链接地址
+    > git remote -v 查看链接是否链接成功
+    > git push origin master (如果想让github赠送个链接可以用gh-pages 分支[这个分支下必须有个html文件]进行提交，在项目setting下可以看到页面地址)
+## 克隆别人的代码
+    > git clone github上的项目地址 (克隆下来的项目 直接把链接可以copy下来了)
+    > git pull origin master （别人改了代码 ，可以直接更新啦）
     
