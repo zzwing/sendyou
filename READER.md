@@ -35,5 +35,6 @@
     - 创建并切换分支
         > git checkout -b dev
 
-
-    -- hhh
+    - 合并分支
+        > git merge dev (必须在master主干上去合并，此时如果有冲突需要手动修改冲突再次提交)
+    
