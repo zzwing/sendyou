@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="" class="navbar-brand">珠峰</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <form>
+                    <div class="form-group">
+                        <label for="username" class="control-label">请输入用户名</label>
+                        <input type="text" id="username" class="form-control" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label">请输入密码</label>
+                        <input type="text" id="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="addBnt">添加</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group" id="list">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--引入ajax-->
+<script src="ajax.js"></script>
+<script>
+    // get 获取用户 通过query 来实现 获取一个 、获取全部
+    // post 添加
+    // delete 删除
+    // put 修改
+    getAll();
+    addBnt.addEventListener('click',addUser);
+    function bindHtml(data) {
+        let html = '';
+        if (data) {
+            data.forEach(item => {
+                html += `
+                    <li class="list-group-item">
+                        姓名: <input type="text" id='username_${item.id}' value="${item.username}" readonly>
+                        密码:<input type="text"  id='password_${item.id}' value="${item.password}" readonly>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary deleteBnt" data-id="${item.id}">删除</button>
+                            <button type="button" class="btn btn-primary putBnt" data-id="${item.id}">修改</button>
+                        </div>
+                    </li>`;
+            });
+            list.innerHTML = html;
+            initEvent();
+        }
+    }
+    function initEvent(){
+        let deleteBnts = document.querySelectorAll('.deleteBnt');
+        let putBnts = document.querySelectorAll('.putBnt');
+        deleteBnts.forEach(item=>{
+            item.addEventListener('click',function () {
+                deleteFn(item.getAttribute('data-id'));
+            });
+        });
+        putBnts.forEach(item=>{
+            item.addEventListener('click',function () {
+                putFn(item.getAttribute('data-id'));
+            });
+        });
+
+    }
+
+    function getAll(){
+        ajax({
+            url:'/user',
+            type:'json',
+            method:'GET',
+        }).then(function (data) {
+            bindHtml(data);
+        },function (err) {
+            console.log(err);
+        })
+    }
+    //添加
+    function addUser(){
+        let name = username.value;
+        let pass = password.value;
+        if(!name || !pass){
+            alert('用户名或密码不能为空');
+            return false;
+        }
+        ajax({
+            url:'/user',
+            type:'json',
+            method:'POST',
+            data:{username:name,password:pass}
+        }).then(function (data) {
+            bindHtml(data);
+            username.value = '';
+            password.value = '';
+        },function (err) {
+            console.log(err);
+        })
+    }
+    //删除
+    function deleteFn(id) {
+        ajax({
+            url:'/user?id='+id,
+            type:'json',
+            method:'DELETE'
+        }).then(function (data) {
+            bindHtml(data);
+        },function (err) {
+            console.log(err);
+        })
+    }
+    //修改
+    function putFn(id) {
+        let $username = document.querySelector('#username_'+id);
+        let $password = document.querySelector('#password_'+id);
+        if($username.hasAttribute('readonly')){
+            $username.removeAttribute('readonly');
+            $password.removeAttribute('readonly');
+            $username.focus();
+        }else{
+            ajax({
+                url:'/user',
+                type:'json',
+                method:'PUT',
+                data:{id:id,username:$username.value,password:$password.value}
+            }).then(function (data) {
+                bindHtml(data);
+                alert('修改成功');
+            },function (err) {
+                console.log(err);
+            })
+        }
+
+    }
+</script>
+</body>
+</html>

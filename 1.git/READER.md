@@ -46,4 +46,3 @@
 ## 克隆别人的代码
     > git clone github上的项目地址 (克隆下来的项目 直接把链接可以copy下来了)
     > git pull origin master （别人改了代码 ，可以直接更新啦）
-    

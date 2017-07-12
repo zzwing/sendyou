@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="times">哈哈哈</div>
+<!--<script src="index.js"></script>-->
+<script>
+    function ajax({url='',type='text',method='GET',async=true,data={}}) {
+        return new Promise(function (resolve,reject) {
+            let xhr = new XMLHttpRequest();
+            xhr.responseType = type;
+            xhr.open(method,url,async);
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (err) {
+                reject(err);
+            };
+            xhr.send(JSON.stringify(data));
+        });
+    }
+    ajax({
+        url:'/clock',
+        method:'GET',
+        type:'json'
+    }).then(function (data) {
+        console.log(data);
+        times.innerHTML = data.timer;
+    },function (err) {
+        console.log(err);
+    });
+</script>
+</body>
+</html>
